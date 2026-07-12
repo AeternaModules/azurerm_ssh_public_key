@@ -1,3 +1,7 @@
+output "ssh_public_keys_id" {
+  description = "Map of id values across all ssh_public_keys, keyed the same as var.ssh_public_keys"
+  value       = { for k, v in azurerm_ssh_public_key.ssh_public_keys : k => v.id }
+}
 output "ssh_public_keys_location" {
   description = "Map of location values across all ssh_public_keys, keyed the same as var.ssh_public_keys"
   value       = { for k, v in azurerm_ssh_public_key.ssh_public_keys : k => v.location }
