@@ -17,18 +17,13 @@ EOT
     resource_group_name = string
     tags                = optional(map(string))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.ssh_public_keys : (
-        can(regex("^[-a-zA-Z0-9(_).]{1,128}$", v.name))
-      )
-    ])
-    error_message = "Public SSH Key name must be 1 - 128 characters long, can contain letters, numbers, underscores, dots and hyphens (but the first and last character must be a letter or number)."
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_ssh_public_key's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
   # Review, translate into a real validation{} block above, and delete once confirmed.
+  # path: name
+  #   condition: can(regex("^[-a-zA-Z0-9(_).]{1,128}$", value))
+  #   message:   Public SSH Key name must be 1 - 128 characters long, can contain letters, numbers, underscores, dots and hyphens (but the first and last character must be a letter or number).
   # path: resource_group_name
   #   condition: length(value) <= 90
   #   message:   [from resourcegroups.ValidateName: invalid when len(value) > 90]
